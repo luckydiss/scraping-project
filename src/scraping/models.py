@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from .utils import from_cyrillic_to_eng
+
 
 class City(models.Model):
     name = models.CharField(max_length=50,
@@ -14,6 +16,11 @@ class City(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self,*args, **kwargs):
+        if not self.plug:
+            self.plug = from_cyrillic_to_eng(str(self.name))
+        super().save(*args, **kwargs)
+
 class Language(models.Model):
     name = models.CharField(max_length=50,
                             verbose_name='Язык программирования')
@@ -25,3 +32,8 @@ class Language(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self,*args, **kwargs):
+        if not self.plug:
+            self.plug = from_cyrillic_to_eng(str(self.name))
+        super().save(*args, **kwargs)
