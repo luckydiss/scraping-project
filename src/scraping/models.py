@@ -37,3 +37,20 @@ class Language(models.Model):
         if not self.plug:
             self.plug = from_cyrillic_to_eng(str(self.name))
         super().save(*args, **kwargs)
+
+class Vacancy(models.Model):
+    url = models.URLField(unique=True)
+    title = models.CharField(max_length=250, verbose_name='Заголовок вакансии')
+    company = models.CharField(max_length=250, verbose_name='Название компании')
+    description = models.TextField(verbose_name='Описание')
+    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Город')
+    language = models.ForeignKey(Language, on_delete=models.CASCADE,
+                                   verbose_name='Язык программирования')
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Вакансия'
+        verbose_name_plural = 'Вакансии'
+
+    def __str__(self):
+        return self.title
