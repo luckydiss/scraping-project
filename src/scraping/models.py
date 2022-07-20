@@ -7,7 +7,7 @@ from .utils import from_cyrillic_to_eng
 class City(models.Model):
     name = models.CharField(max_length=50,
                             verbose_name='Название населенного пункта')
-    plug = models.CharField(max_length=50, blank=True, unique=True)
+    slug = models.CharField(max_length=50, blank=True, unique=True)
 
     class Meta:
         verbose_name = 'Название населенного пункта'
@@ -17,14 +17,14 @@ class City(models.Model):
         return self.name
 
     def save(self,*args, **kwargs):
-        if not self.plug:
-            self.plug = from_cyrillic_to_eng(str(self.name))
+        if not self.slug:
+            self.slug = from_cyrillic_to_eng(str(self.name))
         super().save(*args, **kwargs)
 
 class Language(models.Model):
     name = models.CharField(max_length=50,
                             verbose_name='Язык программирования')
-    plug = models.CharField(max_length=50, blank=True, unique=True)
+    slug = models.CharField(max_length=50, blank=True, unique=True)
 
     class Meta:
         verbose_name = 'Язык программирования'
@@ -34,8 +34,8 @@ class Language(models.Model):
         return self.name
 
     def save(self,*args, **kwargs):
-        if not self.plug:
-            self.plug = from_cyrillic_to_eng(str(self.name))
+        if not self.slug:
+            self.slug = from_cyrillic_to_eng(str(self.name))
         super().save(*args, **kwargs)
 
 class Vacancy(models.Model):
